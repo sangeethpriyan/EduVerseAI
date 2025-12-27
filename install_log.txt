@@ -1,0 +1,17 @@
+Scope: all 5 workspace projects
+Progress: resolved 1, reused 0, downloaded 0, added 0
+apps/api                                 |  WARN  deprecated multer@1.4.5-lts.2
+Progress: resolved 14, reused 14, downloaded 0, added 0
+ WARN  deprecated eslint@8.57.1: This version is no longer supported. Please see https://eslint.org/version-support for other options.
+Progress: resolved 22, reused 22, downloaded 0, added 0
+Progress: resolved 29, reused 28, downloaded 0, added 0
+Progress: resolved 32, reused 30, downloaded 0, added 0
+D:\Quantelle Enterprises\EduVerse 2.0\apps\api:
+ ERR_PNPM_NO_MATCHING_VERSION  No matching version found for jsonwebtoken@^9.1.2 while fetching it from https://registry.npmjs.org/
+
+This error happened while installing a direct dependency of D:\Quantelle Enterprises\EduVerse 2.0\apps\api
+
+The latest release of jsonwebtoken is "9.0.3".
+
+If you need the full list of all 82 published versions run "$ pnpm view jsonwebtoken versions".
+Progress: resolved 38, reused 35, downloaded 1, added 0

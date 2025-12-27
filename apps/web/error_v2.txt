@@ -1,0 +1,44 @@
+
+> @eduverse/web@1.0.0 build D:\Quantelle Enterprises\EduVerse 2.0\apps\web
+> next build
+
+  ▲ Next.js 14.2.35
+  - Environments: .env
+
+   Creating an optimized production build ...
+ ✓ Compiled successfully
+   Linting and checking validity of types ...
+ ⨯ ESLint: Failed to load config "next/core-web-vitals" to extend from. Referenced from: D:\Quantelle Enterprises\EduVerse 2.0\apps\web\.eslintrc.json
+   Collecting page data ...
+   Generating static pages (0/5) ...
+ ⚠ Unsupported metadata viewport is configured in metadata export in /student/dashboard. Please move it to viewport export instead.
+Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+ ⚠ Unsupported metadata viewport is configured in metadata export in /student/dashboard. Please move it to viewport export instead.
+Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+ ⚠ Unsupported metadata viewport is configured in metadata export in /. Please move it to viewport export instead.
+Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+   Generating static pages (1/5) 
+   Generating static pages (2/5) 
+ ⚠ Unsupported metadata viewport is configured in metadata export in /_not-found. Please move it to viewport export instead.
+Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+ ⚠ Unsupported metadata viewport is configured in metadata export in /_not-found. Please move it to viewport export instead.
+Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+ ⚠ Unsupported metadata viewport is configured in metadata export in /. Please move it to viewport export instead.
+Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+   Generating static pages (3/5) 
+ ✓ Generating static pages (5/5)
+   Finalizing page optimization ...
+   Collecting build traces ...
+
+Route (app)                              Size     First Load JS
+┌ ○ /                                    1.13 kB         110 kB
+├ ○ /_not-found                          872 B          88.1 kB
+└ ○ /student/dashboard                   1.53 kB         110 kB
++ First Load JS shared by all            87.2 kB
+  ├ chunks/5b8f0dd8-8df0f8787c39d86d.js  53.6 kB
+  ├ chunks/749-b4b6d1c3c650f83b.js       31.6 kB
+  └ other shared chunks (total)          1.96 kB
+
+
+○  (Static)  prerendered as static content
+
