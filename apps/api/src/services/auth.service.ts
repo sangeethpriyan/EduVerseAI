@@ -1,5 +1,5 @@
 import { prisma } from "@eduverse/db";
-import { passwordService, jwtService, generatePermissionsForRole } from "../utils/index";
+import { PasswordService, jwtService, generatePermissionsForRole } from "../utils/index";
 import { UserRole } from "@eduverse/shared";
 import { logger } from "../utils/logger";
 
@@ -21,7 +21,7 @@ export class AuthService {
     }
 
     // Hash password
-    const hashedPassword = await passwordService.hashPassword(password);
+    const hashedPassword = await PasswordService.hashPassword(password);
 
     // Create user
     const user = await prisma.user.create({
@@ -84,7 +84,7 @@ export class AuthService {
       throw new Error("Invalid credentials");
     }
 
-    const isPasswordValid = await passwordService.verifyPassword(password, user.password);
+    const isPasswordValid = await PasswordService.verifyPassword(password, user.password);
 
     if (!isPasswordValid) {
       throw new Error("Invalid credentials");
@@ -109,6 +109,51 @@ export class AuthService {
         permissions,
       }),
       refreshToken: jwtService.generateRefreshToken(user.id),
+    };
+  }
+
+  async studentLogin(rollNo: string, password: string) {
+    // Look up student by roll number
+    const student = await prisma.student.findUnique({
+      where: { rollNo },
+      include: {
+        user: true,
+      },
+    });
+
+    if (!student || !student.user) {
+      throw new Error("Invalid credentials");
+    }
+
+    const isPasswordValid = await PasswordService.verifyPassword(password, student.user.password);
+
+    if (!isPasswordValid) {
+      throw new Error("Invalid credentials");
+    }
+
+    if (student.user.role !== UserRole.STUDENT) {
+      throw new Error("Invalid credentials for student portal");
+    }
+
+    logger.info("Student logged in", { userId: student.user.id, rollNo });
+
+    const permissions = generatePermissionsForRole(UserRole.STUDENT);
+
+    return {
+      user: {
+        id: student.user.id,
+        email: student.user.email,
+        firstName: student.user.firstName,
+        lastName: student.user.lastName,
+        role: student.user.role,
+      },
+      accessToken: jwtService.generateToken({
+        userId: student.user.id,
+        email: student.user.email,
+        role: UserRole.STUDENT,
+        permissions,
+      }),
+      refreshToken: jwtService.generateRefreshToken(student.user.id),
     };
   }
 

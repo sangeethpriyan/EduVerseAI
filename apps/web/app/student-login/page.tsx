@@ -20,10 +20,8 @@ export default function StudentLoginPage(): JSX.Element {
     setLoading(true);
 
     try {
-      // For student login, we'll use email field with roll number for now
-      // In production, you'd have a separate endpoint or lookup
-      const response = await axios.post(`${API_URL}/api/auth/login`, {
-        email: rollNo, // Assuming rollNo is used as email or there's a lookup
+      const response = await axios.post(`${API_URL}/api/auth/student-login`, {
+        rollNo,
         password,
       });
 

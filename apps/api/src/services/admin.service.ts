@@ -222,8 +222,8 @@ export class AdminService {
     }
 
     // Create user account
-    const { passwordService } = await import("../utils/password");
-    const hashedPassword = await passwordService.hashPassword(data.password);
+    const { PasswordService } = await import("../utils/password");
+    const hashedPassword = await PasswordService.hashPassword(data.password);
 
     const user = await prisma.user.create({
       data: {

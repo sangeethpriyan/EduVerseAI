@@ -91,17 +91,36 @@ export class TeacherService {
       },
     });
 
+    // Collect all course IDs and student IDs to batch fetch attendance
+    const courseIds = courses.map((c) => c.id);
+    const allEnrollments = courses.flatMap((c) => c.enrollments);
+    const studentIds = [...new Set(allEnrollments.map((e) => e.studentId))];
+
+    // Batch fetch all attendance records in a single query
+    const allAttendance = await prisma.attendance.findMany({
+      where: {
+        courseId: { in: courseIds },
+        studentId: { in: studentIds },
+      },
+    });
+
+    // Create a map for quick lookup: (studentId, courseId) -> attendance records
+    const attendanceMap = new Map<string, typeof allAttendance>();
+    allAttendance.forEach((record) => {
+      const key = `${record.studentId}:${record.courseId}`;
+      if (!attendanceMap.has(key)) {
+        attendanceMap.set(key, []);
+      }
+      attendanceMap.get(key)!.push(record);
+    });
+
     const alerts: any[] = [];
 
+    // Process enrollments using the pre-fetched attendance data
     for (const course of courses) {
       for (const enrollment of course.enrollments) {
-        // Fetch attendance records for this specific student-course combination
-        const attendance = await prisma.attendance.findMany({
-          where: {
-            studentId: enrollment.studentId,
-            courseId: course.id,
-          },
-        });
+        const key = `${enrollment.studentId}:${course.id}`;
+        const attendance = attendanceMap.get(key) || [];
 
         const totalClasses = attendance.length;
         const attendedClasses = attendance.filter((a) => a.status === "present").length;

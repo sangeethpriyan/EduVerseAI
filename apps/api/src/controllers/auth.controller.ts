@@ -66,6 +66,38 @@ export class AuthController {
     }
   }
 
+  static async studentLogin(req: Request, res: Response): Promise<void> {
+    try {
+      const { rollNo, password } = req.body;
+
+      if (!rollNo || !password) {
+        ApiResponseHandler.badRequest(res, "Roll number and password are required");
+        return;
+      }
+
+      const result = await authService.studentLogin(rollNo, password);
+
+      // Set refresh token as HTTP-only cookie
+      res.cookie("refreshToken", result.refreshToken, {
+        httpOnly: true,
+        secure: process.env.NODE_ENV === "production",
+        sameSite: "strict",
+        maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
+      });
+
+      ApiResponseHandler.success(res, result);
+    } catch (error) {
+      logger.warn("Student login failed", { error });
+
+      if (error instanceof Error && error.message.includes("Invalid credentials")) {
+        ApiResponseHandler.unauthorized(res, "Invalid credentials");
+        return;
+      }
+
+      ApiResponseHandler.error(res, "LOGIN_FAILED", "Failed to login");
+    }
+  }
+
   static async refreshToken(req: Request, res: Response): Promise<void> {
     try {
       const refreshToken = req.cookies.refreshToken || req.body.refreshToken;

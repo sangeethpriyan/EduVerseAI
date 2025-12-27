@@ -1,9 +1,9 @@
-import express from "express";
+import express, { Router } from "express";
 import { AIController } from "../controllers/ai.controller";
 import { authMiddleware, requirePermission } from "../middleware/auth";
 import { Permission } from "@eduverse/shared";
 
-const router = express.Router();
+const router: Router = express.Router();
 
 // All routes require authentication
 router.use(authMiddleware);
